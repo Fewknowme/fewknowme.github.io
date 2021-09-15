@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/static/css/main.259b522b.chunk.css",
+    "main.js": "/static/js/main.554e0cfc.chunk.js",
+    "main.js.map": "/static/js/main.554e0cfc.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.7b61e083.js",
+    "runtime-main.js.map": "/static/js/runtime-main.7b61e083.js.map",
+    "static/css/2.242f24fe.chunk.css": "/static/css/2.242f24fe.chunk.css",
+    "static/js/2.f53f1dbb.chunk.js": "/static/js/2.f53f1dbb.chunk.js",
+    "static/js/2.f53f1dbb.chunk.js.map": "/static/js/2.f53f1dbb.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.2dec40a32f34738d086bd657ac1d8938.js": "/precache-manifest.2dec40a32f34738d086bd657ac1d8938.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.242f24fe.chunk.css.map": "/static/css/2.242f24fe.chunk.css.map",
+    "static/css/main.259b522b.chunk.css.map": "/static/css/main.259b522b.chunk.css.map",
+    "static/js/2.f53f1dbb.chunk.js.LICENSE": "/static/js/2.f53f1dbb.chunk.js.LICENSE",
+    "static/media/RESTATE.jpg": "/static/media/RESTATE.995f9ba2.jpg",
+    "static/media/RacIT1.png": "/static/media/RacIT1.b3abe2e9.png",
+    "static/media/RacIT2.png": "/static/media/RacIT2.2edfa5b3.png",
+    "static/media/RacIT3.png": "/static/media/RacIT3.0f8cde2a.png",
+    "static/media/earth.jpg": "/static/media/earth.67af05e1.jpg",
+    "static/media/font-awesome.css": "/static/media/fontawesome-webfont.fee66e71.woff",
+    "static/media/ionicons.css": "/static/media/ionicons.621bd386.svg",
+    "static/media/leaflet.png": "/static/media/leaflet.4cbcf130.png",
+    "static/media/myimage.jpeg": "/static/media/myimage.ea4cf69c.jpeg",
+    "static/media/spaceRes.jpg": "/static/media/spaceRes.ddc08c6a.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7b61e083.js",
+    "static/css/2.242f24fe.chunk.css",
+    "static/js/2.f53f1dbb.chunk.js",
+    "static/css/main.259b522b.chunk.css",
+    "static/js/main.554e0cfc.chunk.js"
+  ]
+}
