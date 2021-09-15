@@ -1,14 +1,13 @@
 import React from "react";
 import $ from "jquery";
 
-import logo1 from "../img/male1.png";
-import logo2 from "../img/male.png";
+import logo1 from "../img/myimage.jpeg";
 
 class Navbar extends React.Component {
   constructor() {
     super();
     this.state = {
-      logo: logo1
+      logo: logo1,
     };
   }
 
@@ -16,7 +15,7 @@ class Navbar extends React.Component {
     const nav = $("nav");
     let navHeight = nav.outerHeight();
 
-    $(".navbar-toggler").on("click", function() {
+    $(".navbar-toggler").on("click", function () {
       if (!$("#mainNav").hasClass("navbar-reduce")) {
         $("#mainNav").addClass("navbar-reduce");
       }
@@ -24,34 +23,19 @@ class Navbar extends React.Component {
 
     $("body").scrollspy({
       target: "#mainNav",
-      offset: navHeight
+      offset: navHeight,
     });
 
-    $(".js-scroll").on("click", function() {
+    $(".js-scroll").on("click", function () {
       $(".navbar-collapse").collapse("hide");
     });
+    document.querySelector(".navbar-expand-md").classList.add("navbar-reduce");
+    document
+      .querySelector(".navbar-expand-md")
+      .classList.remove("navbar-trans");
+    this.setState({ logo: logo1 });
 
-    window.addEventListener("scroll", () => {
-      if (window.pageYOffset > 50) {
-        document
-          .querySelector(".navbar-expand-md")
-          .classList.add("navbar-reduce");
-        document
-          .querySelector(".navbar-expand-md")
-          .classList.remove("navbar-trans");
-        this.setState({ logo: logo2 });
-      } else {
-        document
-          .querySelector(".navbar-expand-md")
-          .classList.add("navbar-trans");
-        document
-          .querySelector(".navbar-expand-md")
-          .classList.remove("navbar-reduce");
-        this.setState({ logo: logo1 });
-      }
-    });
-
-    $('a.js-scroll[href*="#"]:not([href="#"])').on("click", function() {
+    $('a.js-scroll[href*="#"]:not([href="#"])').on("click", function () {
       if (
         window.location.pathname.replace(/^\//, "") ===
           this.pathname.replace(/^\//, "") &&
@@ -64,7 +48,7 @@ class Navbar extends React.Component {
         if (target.length) {
           $("html, body").animate(
             {
-              scrollTop: target.offset().top - navHeight + 5
+              scrollTop: target.offset().top - navHeight + 5,
             },
             1000,
             "easeInExpo"
@@ -74,7 +58,7 @@ class Navbar extends React.Component {
       }
     });
 
-    $(".js-scroll").on("click", function() {
+    $(".js-scroll").on("click", function () {
       $(".navbar-collapse").collapse("hide");
     });
   }
