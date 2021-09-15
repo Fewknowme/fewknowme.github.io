@@ -1,6 +1,6 @@
 # React-portfolio
 
-A boilrplate react portfolio to showcase your projects and work
+A react portfolio to showcase my projects and work
 
 Credits for boilerPlate link -> https://shloksomani.github.io/react-portfolio/
 
