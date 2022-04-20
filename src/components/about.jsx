@@ -59,7 +59,11 @@ class About extends React.Component {
         {
           id: "third-p-about",
           content:
-            "- Currently working at Ampra Solutions, Pune, India. Delivering solutions to Sophisticated problems.",
+            "- Currently working at Infosys, Pune, India. Delivering solutions to Sophisticated problems.",
+        },
+        {
+          id: "fourth-p-about",
+          content: "- Previously at Ampra Solutions Pvt. Ltd.",
         },
       ],
     };

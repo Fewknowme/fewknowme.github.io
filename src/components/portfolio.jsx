@@ -36,7 +36,7 @@ class Portfolio extends React.Component {
                         <div className="w-more">
                           <span className="w-ctegory">
                             React with Typescript, Servicenow, Styled
-                            Components, Devextreme Components
+                            Components, Devextreme Components, Redux
                           </span>
                         </div>
                       </div>
@@ -63,8 +63,8 @@ class Portfolio extends React.Component {
                         <div className="w-more">
                           <span className="w-ctegory">
                             React with Typescript, Servicenow, Styled
-                            Components, Devextreme Components
-                          </span>{" "}
+                            Components, Devextreme Components, Redux
+                          </span>
                         </div>
                       </div>
                       <div className="col-sm-4">
@@ -90,7 +90,7 @@ class Portfolio extends React.Component {
                         <div className="w-more">
                           <span className="w-ctegory">
                             React with Typescript, Servicenow, Styled
-                            Components, Devextreme Components
+                            Components, Devextreme Components, Redux
                           </span>
                         </div>
                       </div>
@@ -101,6 +101,58 @@ class Portfolio extends React.Component {
                       </div>
                     </div>
                   </div>
+                </a>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="work-box">
+                <a
+                  href={
+                    "https://docs.microsoft.com/en-us/office/dev/add-ins/images/quick-start-task-pane-3.pnghttps://docs.microsoft.com/en-us/office/dev/add-ins/images/quick-start-task-pane-3.png"
+                  }
+                  data-lightbox="gallery-todo"
+                >
+                  <div className="work-img">
+                    <img
+                      src={
+                        "https://docs.microsoft.com/en-us/office/dev/add-ins/images/quick-start-task-pane-3.png"
+                      }
+                      alt=""
+                      className="img-fluid"
+                    />
+                  </div>
+                  <div className="work-content">
+                    <div className="row">
+                      <div className="col-sm-8">
+                        <h2 className="w-title">Nuvolo Outlook Plugin</h2>
+                        <div className="w-more">
+                          <span className="w-ctegory">
+                            React with Typescript, Servicenow, Styled
+                            Components, Devextreme Components, Redux
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col-sm-4">
+                        <div className="w-like">
+                          <span className="ion-ios-plus-outline"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+                <a
+                  href={RacIT2}
+                  data-lightbox="gallery-todo"
+                  style={{ display: "none" }}
+                >
+                  jsx-a11y/anchor-has-content warning
+                </a>
+                <a
+                  href={RacIT3}
+                  data-lightbox="gallery-todo"
+                  style={{ display: "none" }}
+                >
+                  jsx-a11y/anchor-has-content warning
                 </a>
               </div>
             </div>
