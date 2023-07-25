@@ -59,11 +59,12 @@ class About extends React.Component {
         {
           id: "third-p-about",
           content:
-            "- Currently working at Spriio Software Solutions, Pune, India. Delivering solutions to Sophisticated problems.",
+            "- Currently working at KIPL Global, Pune, India. Delivering solutions to Sophisticated problems.",
         },
         {
           id: "fourth-p-about",
-          content: "- Previously at Ampra Solutions Pvt. Ltd., Infosys Pvt. Ltd.",
+          content:
+            "- Previously at Ampra Solutions Pvt. Ltd., Infosys Pvt. Ltd., Spriio",
         },
       ],
     };
