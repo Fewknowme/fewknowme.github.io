@@ -8,14 +8,26 @@ class About extends React.Component {
         {
           id: "ReactJS/TS_skill",
           content: "ReactJS/TS",
-          porcentage: "80%",
-          value: "80",
+          porcentage: "90%",
+          value: "90",
         },
         {
           id: "ReactNative_skill",
           content: "React Native TS/JS",
-          porcentage: "70%",
-          value: "70",
+          porcentage: "90%",
+          value: "90",
+        },
+        {
+          id: "NextJS_skill",
+          content: "Next TS/JS",
+          porcentage: "85%",
+          value: "85%",
+        },
+        {
+          id: "Sanity.io_skill",
+          content: "Sanity.io (CMS)",
+          porcentage: "85%",
+          value: "85%",
         },
         {
           id: "ServiceNow_skill",
@@ -34,8 +46,8 @@ class About extends React.Component {
         {
           id: "JavaScript_skill",
           content: "JavaScript",
-          porcentage: "70%",
-          value: "70",
+          porcentage: "90%",
+          value: "90",
         },
         { id: "PHP_skill", content: "PHP", porcentage: "70%", value: "70" },
         {

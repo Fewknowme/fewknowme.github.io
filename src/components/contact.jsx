@@ -147,7 +147,10 @@ class Contact extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-sm-12">
-                <div className="copyright-box"></div>
+                <div className="copyright-box">
+                  Note: I don't moniter this form. Kindly get in contact with
+                  Linkedin :)
+                </div>
               </div>
             </div>
           </div>
