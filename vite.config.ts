@@ -2,7 +2,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { resolve } from "path";
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
+import { writeFileSync, readFileSync, existsSync } from "fs";
 
 export default defineConfig({
   base: "/",
@@ -19,15 +19,10 @@ export default defineConfig({
     tanstackStart({
       spa: {
         enabled: true,
-        prerender: {
-          retryCount: 1,
-          crawlLinks: true,
-          outputPath: "/_shell.html",
-        },
       },
       prerender: {
-        crawlLinks: true,
         enabled: true,
+        crawlLinks: true,
         autoSubfolderIndex: true,
         concurrency: 4,
       },
@@ -40,21 +35,16 @@ export default defineConfig({
       closeBundle() {
         const outputDir = resolve(process.cwd(), ".output/public");
         const shellPath = resolve(outputDir, "_shell.html");
-        const notFoundPath = resolve(outputDir, "404.html");
         const indexPath = resolve(outputDir, "index.html");
+        const notFoundPath = resolve(outputDir, "404.html");
         const nojekyllPath = resolve(outputDir, ".nojekyll");
-
         console.log("Looking for _shell.html at:", shellPath);
-
         if (existsSync(shellPath)) {
           const shellHtml = readFileSync(shellPath, "utf-8");
-
           writeFileSync(indexPath, shellHtml);
           console.log("✅ index.html generated at:", indexPath);
-
           writeFileSync(notFoundPath, shellHtml);
           console.log("✅ 404.html generated at:", notFoundPath);
-
           writeFileSync(nojekyllPath, "");
           console.log("✅ .nojekyll file created at:", nojekyllPath);
         } else {
