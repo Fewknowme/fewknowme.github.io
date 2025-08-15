@@ -31,7 +31,8 @@ export default defineConfig({
     {
       name: "spa-fallback-404",
       writeBundle() {
-        const indexPath = resolve(__dirname, "dist/index.html");
+        const outputDir = resolve(__dirname, ".output/public");
+        const indexPath = resolve(outputDir, "index.html");
         if (existsSync(indexPath)) {
           const indexHtml = readFileSync(indexPath, "utf-8");
           writeFileSync(resolve(__dirname, "dist/404.html"), indexHtml);
