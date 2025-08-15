@@ -2,7 +2,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { resolve } from "path";
-import { writeFileSync, readFileSync, existsSync } from "fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
 
 export default defineConfig({
   base: "/",
@@ -30,15 +30,31 @@ export default defineConfig({
     }),
     {
       name: "spa-fallback-404",
-      writeBundle() {
-        const outputDir = resolve(__dirname, ".output/public");
+      closeBundle() {
+        const outputDir = resolve(process.cwd(), ".output/public");
         const indexPath = resolve(outputDir, "index.html");
+        const notFoundPath = resolve(outputDir, "404.html");
+        const nojekyllPath = resolve(outputDir, ".nojekyll");
+
+        console.log("Looking for index.html at:", indexPath);
+
         if (existsSync(indexPath)) {
           const indexHtml = readFileSync(indexPath, "utf-8");
-          writeFileSync(resolve(__dirname, "dist/404.html"), indexHtml);
-          console.log("✅ 404.html generated for GitHub Pages SPA fallback");
+
+          writeFileSync(notFoundPath, indexHtml);
+          console.log("✅ 404.html generated at:", notFoundPath);
+
+          writeFileSync(nojekyllPath, "");
+          console.log("✅ .nojekyll file created at:", nojekyllPath);
         } else {
-          console.warn("⚠️ index.html not found, skipping 404.html generation");
+          console.warn("⚠️ index.html not found at:", indexPath);
+
+          try {
+            const files = require("fs").readdirSync(outputDir);
+            console.log("Files in output directory:", files);
+          } catch (err) {
+            console.warn("Could not read output directory:", outputDir);
+          }
         }
       },
     },
