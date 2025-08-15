@@ -1,0 +1,101 @@
+{
+  "../../../../~start/default-client-entry.tsx": {
+    "file": "assets/main-DKInwcsf.js",
+    "name": "main",
+    "src": "../../../../~start/default-client-entry.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "node_modules/@sanity/client/dist/_chunks-es/stegaEncodeSourceMap.js",
+      "_browser-BBh45MIN.js",
+      "src/routes/about.tsx?tsr-split=component",
+      "src/routes/index.tsx?tsr-split=component"
+    ],
+    "assets": [
+      "assets/roboto-cyrillic-ext-wght-normal-mFIB_JhL.woff2",
+      "assets/roboto-cyrillic-wght-normal-B1tIhOr4.woff2",
+      "assets/roboto-greek-ext-wght-normal-DnPa8eh0.woff2",
+      "assets/roboto-greek-wght-normal-DAIrzMIp.woff2",
+      "assets/roboto-math-wght-normal-SopRAUEK.woff2",
+      "assets/roboto-symbols-wght-normal-Bm5C9Z0M.woff2",
+      "assets/roboto-vietnamese-wght-normal-CaxB3VTI.woff2",
+      "assets/roboto-latin-ext-wght-normal-Dqr_DJ6L.woff2",
+      "assets/roboto-latin-wght-normal-CHnqiQTt.woff2",
+      "assets/index-BIe6_WQC.css"
+    ]
+  },
+  "/Users/rohitmadas/otherstuff/portfolio-v2/node_modules/@fontsource-variable/roboto/index.css": {
+    "file": "assets/index-BIe6_WQC.css",
+    "src": "/Users/rohitmadas/otherstuff/portfolio-v2/node_modules/@fontsource-variable/roboto/index.css"
+  },
+  "_browser-BBh45MIN.js": {
+    "file": "assets/browser-BBh45MIN.js",
+    "name": "browser",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-cyrillic-ext-wght-normal.woff2": {
+    "file": "assets/roboto-cyrillic-ext-wght-normal-mFIB_JhL.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-cyrillic-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-cyrillic-wght-normal.woff2": {
+    "file": "assets/roboto-cyrillic-wght-normal-B1tIhOr4.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-cyrillic-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-greek-ext-wght-normal.woff2": {
+    "file": "assets/roboto-greek-ext-wght-normal-DnPa8eh0.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-greek-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-greek-wght-normal.woff2": {
+    "file": "assets/roboto-greek-wght-normal-DAIrzMIp.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-greek-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-latin-ext-wght-normal.woff2": {
+    "file": "assets/roboto-latin-ext-wght-normal-Dqr_DJ6L.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-latin-ext-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-latin-wght-normal.woff2": {
+    "file": "assets/roboto-latin-wght-normal-CHnqiQTt.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-latin-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-math-wght-normal.woff2": {
+    "file": "assets/roboto-math-wght-normal-SopRAUEK.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-math-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-symbols-wght-normal.woff2": {
+    "file": "assets/roboto-symbols-wght-normal-Bm5C9Z0M.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-symbols-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/roboto/files/roboto-vietnamese-wght-normal.woff2": {
+    "file": "assets/roboto-vietnamese-wght-normal-CaxB3VTI.woff2",
+    "src": "node_modules/@fontsource-variable/roboto/files/roboto-vietnamese-wght-normal.woff2"
+  },
+  "node_modules/@sanity/client/dist/_chunks-es/stegaEncodeSourceMap.js": {
+    "file": "assets/stegaEncodeSourceMap-B34Pf6o-.js",
+    "name": "stegaEncodeSourceMap",
+    "src": "node_modules/@sanity/client/dist/_chunks-es/stegaEncodeSourceMap.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "src/routes/about.tsx?tsr-split=component": {
+    "file": "assets/about-DkO_-PLJ.js",
+    "name": "about",
+    "src": "src/routes/about.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "src/routes/index.tsx?tsr-split=component": {
+    "file": "assets/index-06a85F7p.js",
+    "name": "index",
+    "src": "src/routes/index.tsx?tsr-split=component",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../~start/default-client-entry.tsx"
+    ]
+  }
+}
