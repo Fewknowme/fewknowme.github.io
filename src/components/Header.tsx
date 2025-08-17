@@ -6,13 +6,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
 import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ColorModeIconDropdown from "../shared-theme/ColorModeIconDropdown";
-import Sitemark from "./SiteMarkIcon";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -53,27 +50,19 @@ export default function AppAppBar() {
           <Box
             sx={{ flexGrow: 1, display: "flex", alignItems: "center", px: 0 }}
           >
-            {/* <Sitemark /> */}
+            {/* Desktop buttons */}
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <Button
-                onClick={(e) => {
-                  window.scrollTo(0, 0);
-                }}
+                onClick={() => window.scrollTo(0, 0)}
                 variant="text"
                 color="info"
                 size="small"
               >
                 Home
               </Button>
-              <Button
-                href={"#my-work"}
-                variant="text"
-                color="info"
-                size="small"
-              >
+              <Button href="#my-work" variant="text" color="info" size="small">
                 My Work
               </Button>
-
               <Button
                 href="#testimonials"
                 variant="text"
@@ -85,6 +74,8 @@ export default function AppAppBar() {
               </Button>
             </Box>
           </Box>
+
+          {/* Desktop right section */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
@@ -94,6 +85,8 @@ export default function AppAppBar() {
           >
             <ColorModeIconDropdown />
           </Box>
+
+          {/* Mobile section */}
           <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1 }}>
             <ColorModeIconDropdown size="medium" />
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
@@ -110,20 +103,53 @@ export default function AppAppBar() {
               }}
             >
               <Box sx={{ p: 2, backgroundColor: "background.default" }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
+                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <IconButton onClick={toggleDrawer(false)}>
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
-                <MenuItem>Home</MenuItem>
-                <MenuItem>My Work</MenuItem>
-                <MenuItem>Connect</MenuItem>
-                <MenuItem>Blogs</MenuItem>
+
+                {/* Mobile buttons, same as web */}
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                  <Button
+                    onClick={() => {
+                      window.scrollTo(0, 0);
+                      setOpen(false);
+                    }}
+                    variant="text"
+                    color="info"
+                    size="small"
+                  >
+                    Home
+                  </Button>
+                  <Button
+                    href="#my-work"
+                    onClick={() => setOpen(false)}
+                    variant="text"
+                    color="info"
+                    size="small"
+                  >
+                    My Work
+                  </Button>
+                  <Button
+                    href="#testimonials"
+                    onClick={() => setOpen(false)}
+                    variant="text"
+                    color="info"
+                    size="small"
+                  >
+                    Testimonials
+                  </Button>
+                  {/* <Button
+                    href="#blogs"
+                    onClick={() => setOpen(false)}
+                    variant="text"
+                    color="info"
+                    size="small"
+                  >
+                    Blogs
+                  </Button> */}
+                </Box>
               </Box>
             </Drawer>
           </Box>
