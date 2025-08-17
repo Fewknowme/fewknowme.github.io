@@ -20,6 +20,15 @@ const queryClient = new QueryClient();
 
 export const Route = createRootRoute({
   head: () => ({
+    meta: [
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1.0",
+      },
+      {
+        charSet: "utf-8",
+      },
+    ],
     links: [{ rel: "stylesheet", href: fontsourceVariableRobotoCss }],
   }),
   component: RootComponent,
@@ -62,7 +71,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <Container
             maxWidth="lg"
             component="main"
-            sx={{ display: "flex", flexDirection: "column", my: 16, gap: 4 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              my: { xs: 8, md: 16 },
+              gap: 4,
+              px: { xs: 2, sm: 3 },
+            }}
           >
             <MainContent />
             {/* <Latest></Latest> */}

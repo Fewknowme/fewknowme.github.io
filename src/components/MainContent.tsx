@@ -150,10 +150,10 @@ export default function MainContent() {
                 sx={{
                   display: "flex",
                   flexDirection: { xs: "column", md: "row" },
-                  gap: 3,
+                  gap: { xs: 2, md: 3 },
                   alignItems: { xs: "center", md: "center" },
-                  px: 2,
-                  py: 3,
+                  px: { xs: 1, sm: 2 },
+                  py: { xs: 2, md: 3 },
                 }}
               >
                 {/* Profile Photo */}
@@ -162,8 +162,9 @@ export default function MainContent() {
                   src={aboutData.profilePhoto}
                   alt={aboutData.name}
                   sx={{
-                    width: 400,
-                    height: 200,
+                    width: { xs: "100%", sm: 350, md: 400 },
+                    height: { xs: 150, sm: 175, md: 200 },
+                    maxWidth: 400,
                     borderRadius: { xs: 4, md: 12 },
                     objectFit: "cover",
                     border: "2px solid",
@@ -172,7 +173,12 @@ export default function MainContent() {
                 />
 
                 {/* Info Block */}
-                <Box sx={{ flexGrow: 1 }}>
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    textAlign: { xs: "center", md: "left" },
+                  }}
+                >
                   <Typography variant="h2" gutterBottom>
                     I am {aboutData.name}
                   </Typography>
@@ -190,7 +196,14 @@ export default function MainContent() {
                     Connect with me on:
                   </Typography>
                   {/* Social Links */}
-                  <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      flexWrap: "wrap",
+                      justifyContent: { xs: "center", md: "flex-start" },
+                    }}
+                  >
                     {aboutData.socialLinks?.map((link: any) => (
                       <IconButton
                         key={link.iconName}
@@ -199,6 +212,7 @@ export default function MainContent() {
                         target="_blank"
                         color="default"
                         rel="noopener noreferrer"
+                        size="medium"
                       >
                         {iconMap[link.iconName]}
                       </IconButton>

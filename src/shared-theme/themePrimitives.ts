@@ -353,11 +353,23 @@ export const typography = {
     fontWeight: 600,
     lineHeight: 1.2,
     letterSpacing: -0.5,
+    [defaultTheme.breakpoints.down("md")]: {
+      fontSize: defaultTheme.typography.pxToRem(36),
+    },
+    [defaultTheme.breakpoints.down("sm")]: {
+      fontSize: defaultTheme.typography.pxToRem(28),
+    },
   },
   h2: {
     fontSize: defaultTheme.typography.pxToRem(36),
     fontWeight: 600,
     lineHeight: 1.2,
+    [defaultTheme.breakpoints.down("md")]: {
+      fontSize: defaultTheme.typography.pxToRem(28),
+    },
+    [defaultTheme.breakpoints.down("sm")]: {
+      fontSize: defaultTheme.typography.pxToRem(24),
+    },
   },
   h3: {
     fontSize: defaultTheme.typography.pxToRem(30),
