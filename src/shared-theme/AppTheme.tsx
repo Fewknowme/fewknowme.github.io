@@ -1,12 +1,6 @@
 import * as React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import type { ThemeOptions } from "@mui/material/styles";
-import { inputsCustomizations } from "./customizations/inputs";
-import { dataDisplayCustomizations } from "./customizations/dataDisplay";
-import { feedbackCustomizations } from "./customizations/feedback";
-import { navigationCustomizations } from "./customizations/navigation";
-import { surfacesCustomizations } from "./customizations/surfaces";
-import { colorSchemes, typography, shadows, shape } from "./themePrimitives";
 
 interface AppThemeProps {
   children: React.ReactNode;
@@ -23,26 +17,51 @@ export default function AppTheme(props: AppThemeProps) {
     return disableCustomTheme
       ? {}
       : createTheme({
-          // For more details about CSS variables configuration, see https://mui.com/material-ui/customization/css-theme-variables/configuration/
           cssVariables: {
             colorSchemeSelector: "data-mui-color-scheme",
-            cssVarPrefix: "template",
+            cssVarPrefix: "portfolio",
           },
-          colorSchemes, // Recently added in v6 for building light & dark mode app, see https://mui.com/material-ui/customization/palette/#color-schemes
-          typography,
-          shadows,
-          shape,
+          colorSchemes: {
+            light: {
+              palette: {
+                background: { default: "#f4f0e8", paper: "#fffdf7" },
+                text: { primary: "#171714", secondary: "#615f58" },
+                primary: { main: "#e8563f" },
+                divider: "rgba(23, 23, 20, 0.16)",
+              },
+            },
+            dark: {
+              palette: {
+                background: { default: "#0b0b0a", paper: "#141412" },
+                text: { primary: "#f5f0e6", secondary: "#aaa59b" },
+                primary: { main: "#ff6b52" },
+                divider: "rgba(245, 240, 230, 0.16)",
+              },
+            },
+          },
+          typography: {
+            fontFamily: '"Manrope", sans-serif',
+            h1: { fontFamily: '"Playfair Display", serif' },
+            h2: { fontFamily: '"Playfair Display", serif' },
+            h3: { fontFamily: '"Playfair Display", serif' },
+            button: { fontFamily: '"DM Mono", monospace' },
+          },
+          shape: { borderRadius: 0 },
           components: {
-            ...inputsCustomizations,
-            ...dataDisplayCustomizations,
-            ...feedbackCustomizations,
-            ...navigationCustomizations,
-            ...surfacesCustomizations,
             ...themeComponents,
             MuiCssBaseline: {
               styleOverrides: {
                 html: {
                   scrollBehavior: "smooth",
+                },
+                body: { minWidth: 320 },
+              },
+            },
+            MuiDialog: {
+              styleOverrides: {
+                paper: {
+                  border: "1px solid var(--line)",
+                  backgroundImage: "none",
                 },
               },
             },

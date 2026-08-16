@@ -1,21 +1,14 @@
 /// <reference types="vite/client" />
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  createRootRoute,
-} from "@tanstack/react-router";
+import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-router";
 import { CacheProvider } from "@emotion/react";
-import { Container, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import createCache from "@emotion/cache";
-import fontsourceVariableRobotoCss from "@fontsource-variable/roboto?url";
 import React from "react";
 import AppAppBar from "~/components/Header";
-import Latest from "~/components/Latest";
 import AppTheme from "~/shared-theme/AppTheme";
-import MainContent from "~/components/MainContent";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "~/styles/global.css";
+
 const queryClient = new QueryClient();
 
 export const Route = createRootRoute({
@@ -28,8 +21,28 @@ export const Route = createRootRoute({
       {
         charSet: "utf-8",
       },
+      {
+        title: "Rohit Madas — Frontend Engineer",
+      },
+      {
+        name: "description",
+        content:
+          "Portfolio of Rohit Madas, a frontend engineer building ambitious web and mobile products.",
+      },
+      { name: "theme-color", content: "#0b0b0b" },
     ],
-    links: [{ rel: "stylesheet", href: fontsourceVariableRobotoCss }],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap",
+      },
+    ],
   }),
   component: RootComponent,
 });
@@ -43,16 +56,13 @@ function RootComponent() {
 }
 
 function Providers({ children }: { children: React.ReactNode }) {
-  const emotionCache = createCache({ key: "css" });
+  const emotionCache = React.useMemo(() => createCache({ key: "css" }), []);
 
   return (
     <CacheProvider value={emotionCache}>
       <QueryClientProvider client={queryClient}>
-        {/* <ThemeProvider theme={theme}> */}
-
         <AppTheme>{children}</AppTheme>
       </QueryClientProvider>
-      {/* </ThemeProvider> */}
     </CacheProvider>
   );
 }
@@ -67,24 +77,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Providers>
           <CssBaseline enableColorScheme />
           <AppAppBar />
-
-          <Container
-            maxWidth="lg"
-            component="main"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              my: { xs: 8, md: 16 },
-              gap: 4,
-              px: { xs: 2, sm: 3 },
-            }}
-          >
-            <MainContent />
-            {/* <Latest></Latest> */}
-          </Container>
+          {children}
         </Providers>
-
-        <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
     </html>

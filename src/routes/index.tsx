@@ -1,22 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Stack, Typography } from '@mui/material'
-import z from 'zod'
-import { Counter } from '~/components/Counter'
+import { createFileRoute } from "@tanstack/react-router";
+import MainContent from "~/components/MainContent";
 
 export const Route = createFileRoute('/')({
-  validateSearch: z.object({
-    count: z.number().optional(),
-  }),
-  component: RouteComponent,
-})
+  component: PortfolioRoute,
+});
 
-function RouteComponent() {
-  return (
-    <Stack alignItems="center">
-      <Typography variant="h1" marginBlockEnd={4}>
-        Hello world!
-      </Typography>
-      <Counter />
-    </Stack>
-  )
+function PortfolioRoute() {
+  return <MainContent />;
 }

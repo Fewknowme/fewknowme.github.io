@@ -1,320 +1,356 @@
 import * as React from "react";
-import AvatarGroup from "@mui/material/AvatarGroup";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { styled } from "@mui/material/styles";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import { useAbout } from "~/hooks/useAbout";
-import { PortableText } from "@portabletext/react";
+import ArrowDownwardRoundedIcon from "@mui/icons-material/ArrowDownwardRounded";
+import ArrowOutwardRoundedIcon from "@mui/icons-material/ArrowOutwardRounded";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import PeerListIcon from "@mui/icons-material/People";
-import NewspaperIcon from "@mui/icons-material/Newspaper";
-import { JSX } from "react";
-import { useProjects } from "~/hooks/useProjects";
-import { urlFor } from "~/lib/imageBuilder";
+import NewspaperRoundedIcon from "@mui/icons-material/NewspaperRounded";
+import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
+import { Dialog, IconButton } from "@mui/material";
+import { PortableText } from "@portabletext/react";
 import dayjs from "dayjs";
+import { useAbout } from "~/hooks/useAbout";
+import { useProjects } from "~/hooks/useProjects";
 import { useTestimonial } from "~/hooks/useTestimonial";
-import { Avatar, Link } from "@mui/material";
+import { urlFor } from "~/lib/imageBuilder";
+import type { Project } from "~/types/project";
+import Reveal from "./Reveal";
 
-const iconMap: Record<string, JSX.Element> = {
-  GitHubIcon: <GitHubIcon />,
-  LinkedInIcon: <LinkedInIcon />,
-  PeerList: <PeerListIcon />,
-  MediumIcon: <NewspaperIcon />,
+type SocialLink = {
+  iconName: string;
+  url: string;
 };
 
-const SyledCard = styled(Card)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  padding: 0,
-  height: "100%",
-  backgroundColor: (theme.vars || theme).palette.background.paper,
-  "&:hover": {
-    backgroundColor: "transparent",
-    cursor: "pointer",
-  },
-  "&:focus-visible": {
-    outline: "3px solid",
-    outlineColor: "hsla(210, 98%, 48%, 0.5)",
-    outlineOffset: "2px",
-  },
-}));
+type AboutData = {
+  name: string;
+  description: Parameters<typeof PortableText>[0]["value"];
+  profilePhoto?: string;
+  socialLinks?: SocialLink[];
+};
 
-const SyledCardContent = styled(CardContent)({
-  display: "flex",
-  flexDirection: "column",
-  gap: 4,
-  padding: 16,
-  flexGrow: 1,
-  "&:last-child": {
-    paddingBottom: 16,
-  },
-});
+const socialMeta: Record<
+  string,
+  { label: string; icon: React.ReactNode }
+> = {
+  LinkedInIcon: { label: "LinkedIn", icon: <LinkedInIcon /> },
+  GitHubIcon: { label: "GitHub", icon: <GitHubIcon /> },
+  PeerList: { label: "Peerlist", icon: <PeopleAltRoundedIcon /> },
+  MediumIcon: { label: "Writing", icon: <NewspaperRoundedIcon /> },
+};
 
-function Author({
-  author,
-  date,
-}: {
-  author: string | undefined;
-  date: string | undefined;
-}) {
+function plainText(blocks: Project["description"]) {
+  if (!Array.isArray(blocks)) return "";
+  return blocks
+    .map((block) =>
+      Array.isArray(block.children)
+        ? block.children
+            .map((child) => ("text" in child ? child.text : ""))
+            .join("")
+        : ""
+    )
+    .filter(Boolean)
+    .join(" ");
+}
+
+function SectionLabel({ index, children }: { index: string; children: React.ReactNode }) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        gap: 2,
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "16px",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 1,
-          alignItems: "center",
-        }}
-      >
-        <AvatarGroup max={3}></AvatarGroup>
-        <Typography variant="caption">{author}</Typography>
-      </Box>
-      <Typography variant="caption">{date}</Typography>
-    </Box>
+    <div className="section-label">
+      <span>{index}</span>
+      <p>{children}</p>
+    </div>
   );
 }
 
-export function Search() {
+function LoadingScreen() {
   return (
-    <FormControl sx={{ width: { xs: "100%", md: "25ch" } }} variant="outlined">
-      <OutlinedInput
-        size="small"
-        id="search"
-        placeholder="Search…"
-        sx={{ flexGrow: 1 }}
-        startAdornment={
-          <InputAdornment position="start" sx={{ color: "text.primary" }}>
-            <SearchRoundedIcon fontSize="small" />
-          </InputAdornment>
-        }
-        inputProps={{
-          "aria-label": "search",
-        }}
-      />
-    </FormControl>
+    <main className="loading-screen" aria-live="polite" aria-label="Loading developer data">
+      <div className="loader-topline">
+        <strong>Rohit Madas</strong>
+        <span>Portfolio system / 2026</span>
+      </div>
+
+      <div className="loader-layout">
+        <section className="loader-message">
+          <p><span>$</span> fetch --developer-data</p>
+          <h1>Loading<br /><em>developer data.</em></h1>
+        </section>
+
+        <div className="loader-status" aria-hidden="true">
+          <p><i /> Profile connected</p>
+          <p><i /> Projects indexing</p>
+          <p><i /> Stories preparing</p>
+        </div>
+      </div>
+
+      <div className="loader-footer">
+        <div className="loading-line"><i /></div>
+        <div>
+          <strong>Please stand by</strong>
+          <span>Sanity / Live dataset</span>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function ProjectDialog({ project, onClose }: { project: Project | null; onClose: () => void }) {
+  const hasDescription = project ? Boolean(plainText(project.description).trim()) : false;
+
+  return (
+    <Dialog
+      open={Boolean(project)}
+      onClose={onClose}
+      maxWidth="lg"
+      fullWidth
+      aria-labelledby="project-dialog-title"
+      slotProps={{ paper: { className: "project-dialog" } }}
+    >
+      {project && (
+        <div className="project-dialog__layout">
+          <div className="project-dialog__image-wrap">
+            <img
+              className="project-dialog__image"
+              src={urlFor(project.image).width(1400).quality(90).url()}
+              alt={project.title}
+            />
+            <span className="project-dialog__stamp">Selected work</span>
+          </div>
+          <div className="project-dialog__content">
+            <IconButton className="project-dialog__close" onClick={onClose} aria-label="Close case study">
+              <CloseRoundedIcon />
+            </IconButton>
+            <p className="project-dialog__eyebrow">
+              {project.date ? dayjs(project.date).format("YYYY") : "Case study"}
+            </p>
+            <h2 id="project-dialog-title">{project.title}</h2>
+            {project.shortTitle && <p className="project-dialog__subtitle">{project.shortTitle}</p>}
+            {hasDescription && (
+              <div className="project-dialog__body">
+                <PortableText value={project.description} />
+              </div>
+            )}
+            <div className="project-dialog__footer">
+              <span>Role</span>
+              <strong>{project.createdBy ? `Built by ${project.createdBy}` : "Frontend engineering"}</strong>
+            </div>
+          </div>
+        </div>
+      )}
+    </Dialog>
   );
 }
 
 export default function MainContent() {
-  const { data: aboutData } = useAbout();
-  const { data: projectData } = useProjects();
-  const { data: testimonialData } = useTestimonial();
+  const aboutQuery = useAbout();
+  const projectsQuery = useProjects();
+  const testimonialsQuery = useTestimonial();
+  const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
+  const [introElapsed, setIntroElapsed] = React.useState(false);
 
-  const [focusedCardIndex, setFocusedCardIndex] = React.useState<number | null>(
-    null
-  );
+  React.useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = window.setTimeout(() => setIntroElapsed(true), reduceMotion ? 400 : 1400);
+    return () => window.clearTimeout(timer);
+  }, []);
 
-  const handleFocus = (index: number) => {
-    setFocusedCardIndex(index);
-  };
+  const about = aboutQuery.data as AboutData | undefined;
+  const projects = projectsQuery.data ?? [];
+  const testimonials = testimonialsQuery.data ?? [];
+  const isLoading = aboutQuery.isLoading || projectsQuery.isLoading || testimonialsQuery.isLoading;
+  const hasError = aboutQuery.isError || projectsQuery.isError || testimonialsQuery.isError;
 
-  const handleBlur = () => {
-    setFocusedCardIndex(null);
-  };
+  if ((isLoading && !about) || !introElapsed) return <LoadingScreen />;
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-      <div>
-        <Typography variant="h1" gutterBottom>
-          Hey!
-        </Typography>
-        <Typography>Welcome to my Portfolio</Typography>
-      </div>
-
-      {aboutData && (
-        <Grid container spacing={2} columns={12} sx={{ mb: 2 }}>
-          {/* @ts-expect-error */}
-          <Grid item xs={12}>
-            <SyledCard variant="highlighted">
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  gap: { xs: 2, md: 3 },
-                  alignItems: { xs: "center", md: "center" },
-                  px: { xs: 1, sm: 2 },
-                  py: { xs: 2, md: 3 },
-                }}
-              >
-                {/* Profile Photo */}
-                <Box
-                  component="img"
-                  src={aboutData.profilePhoto}
-                  alt={aboutData.name}
-                  sx={{
-                    width: { xs: "100%", sm: 350, md: 400 },
-                    height: { xs: 150, sm: 175, md: 200 },
-                    maxWidth: 400,
-                    borderRadius: { xs: 4, md: 12 },
-                    objectFit: "cover",
-                    border: "2px solid",
-                    borderColor: "divider",
-                  }}
-                />
-
-                {/* Info Block */}
-                <Box
-                  sx={{
-                    flexGrow: 1,
-                    textAlign: { xs: "center", md: "left" },
-                  }}
-                >
-                  <Typography variant="h2" gutterBottom>
-                    I am {aboutData.name}
-                  </Typography>
-
-                  <Box sx={{ mb: 2 }}>
-                    <PortableText value={aboutData.description} />
-                  </Box>
-                  <Typography
-                    fontWeight={"bold"}
-                    fontStyle={"italic"}
-                    sx={{ mb: 2, textDecoration: "underline" }}
-                    variant="body1"
-                    gutterBottom
-                  >
-                    Connect with me on:
-                  </Typography>
-                  {/* Social Links */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                      flexWrap: "wrap",
-                      justifyContent: { xs: "center", md: "flex-start" },
-                    }}
-                  >
-                    {aboutData.socialLinks?.map((link: any) => (
-                      <IconButton
-                        key={link.iconName}
-                        component="a"
-                        href={link.url}
-                        target="_blank"
-                        color="default"
-                        rel="noopener noreferrer"
-                        size="medium"
-                      >
-                        {iconMap[link.iconName]}
-                      </IconButton>
-                    ))}
-                  </Box>
-                </Box>
-              </Box>
-            </SyledCard>
-          </Grid>
-        </Grid>
+    <main id="top" className="portfolio-main">
+      {hasError && (
+        <div className="data-notice" role="status">
+          Some live content could not be loaded. Please refresh to try again.
+        </div>
       )}
 
-      <div id="my-work">
-        <Typography variant="h1" gutterBottom>
-          My Work
-        </Typography>
-      </div>
+      <section className="hero section-shell" aria-labelledby="hero-title">
+        <div className="hero__topline hero-animate hero-animate--one">
+          <p>Portfolio / 2026</p>
+          <p>Pune, India</p>
+        </div>
 
-      <Grid container spacing={2} columns={12}>
-        {projectData &&
-          projectData.map((project_item) => (
-            <Grid size={{ xs: 12, md: 6 }}>
-              <SyledCard
-                variant="outlined"
-                onFocus={() => handleFocus(0)}
-                onBlur={handleBlur}
-                tabIndex={0}
-                className={focusedCardIndex === 0 ? "Mui-focused" : ""}
-              >
-                <CardMedia
-                  component="img"
-                  alt="project placeholder"
-                  image={urlFor(project_item?.image).url()}
-                  sx={{
-                    objectFit: "contain",
-                    aspectRatio: "16 / 9",
-                    borderBottom: "1px solid",
-                    borderColor: "divider",
-                  }}
-                />
-                <SyledCardContent>
-                  {/* <Typography gutterBottom variant="caption" component="div">
-                    {cardData[0].tag}
-                  </Typography> */}
-                  <Typography gutterBottom variant="h6" component="div">
-                    {project_item.title}
-                  </Typography>
-                  {/* <StyledTypography
-                    variant="body2"
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    {project_item.description}
-                  </StyledTypography> */}
-                </SyledCardContent>
-                <Author
-                  author={project_item.createdBy}
-                  date={dayjs(project_item.date).format("MMM DD, YYYY")}
-                />
-              </SyledCard>
-            </Grid>
-          ))}
-      </Grid>
-      <div id="testimonials">
-        <Typography variant="h1" gutterBottom>
-          Testimonials
-        </Typography>
-      </div>
-      <Box display="grid" gap={3}>
-        {testimonialData?.map((t) => (
-          <Card key={t._id}>
-            <CardContent>
-              <Box display="flex" alignItems="center" gap={2}>
-                {t.profileImage && (
-                  <Avatar
-                    src={t.profileImage}
-                    alt={t.name}
-                    sx={{ width: 56, height: 56 }}
-                  />
-                )}
-                <Box>
-                  <Typography variant="h6">{t.name}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {t.jobTitle} {t.company && ` @ ${t.company}`}
-                  </Typography>
-                </Box>
-              </Box>
-              <Typography sx={{ mt: 2 }}>{t.testimonial}</Typography>
-              {t.linkedinUrl && (
-                <Link
-                  href={t.linkedinUrl}
+        <div className="hero__personal">
+          <div className="hero__headline hero-animate hero-animate--two">
+            <p className="hero__kicker">Hello, I&apos;m {about?.name ?? "Rohit Madas"}.</p>
+            <h1 id="hero-title">
+              A frontend engineer
+              <span>who cares about the details people feel.</span>
+            </h1>
+            <div className="hero__intro">
+              <p>
+                I build thoughtful web and mobile experiences across FinTech,
+                SaaS, and complex product ecosystems—always balancing clarity,
+                craft, and dependable engineering.
+              </p>
+              <div className="hero__ctas">
+                <a className="button-primary" href="#work">
+                  See my work <ArrowDownwardRoundedIcon />
+                </a>
+                <a
+                  className="button-quiet"
+                  href="https://www.linkedin.com/in/rohit-madas-41328b178/"
                   target="_blank"
-                  rel="noopener"
-                  sx={{ mt: 1, display: "inline-block" }}
+                  rel="noreferrer"
                 >
-                  View LinkedIn Recommendation
-                </Link>
+                  Say hello <ArrowOutwardRoundedIcon />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <figure className="hero__portrait-wrap hero-animate hero-animate--three">
+            <div className="hero__portrait-mat">
+              {about?.profilePhoto ? (
+                <img className="hero__portrait" src={about.profilePhoto} alt={about.name} />
+              ) : (
+                <div className="hero__portrait hero__portrait--empty" />
               )}
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
-    </Box>
+            </div>
+            <figcaption>
+              <span>Rohit, off-screen</span>
+              <span>Pune / India</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="about" className="about section-shell">
+        <Reveal className="about__label">
+          <SectionLabel index="01">Perspective</SectionLabel>
+        </Reveal>
+        <Reveal className="about__statement" delay={80}>
+          <p>
+            Engineering is only half the job.
+            <em> The other half is making it feel inevitable.</em>
+          </p>
+        </Reveal>
+        <Reveal className="about__copy" delay={160}>
+          {about?.description && <PortableText value={about.description} />}
+        </Reveal>
+        <Reveal className="about__stats" delay={240}>
+          <div><strong>{projects.length || "—"}</strong><span>Projects documented</span></div>
+          <div><strong>03</strong><span>Industries navigated</span></div>
+          <div><strong>05</strong><span>Core disciplines</span></div>
+        </Reveal>
+      </section>
+
+      <section id="work" className="work-section section-shell">
+        <Reveal className="section-heading">
+          <SectionLabel index="02">Selected archive</SectionLabel>
+          <h2>Work that moved<br /><em>the needle.</em></h2>
+          <p>A cross-section of platforms, products, and systems delivered across industries.</p>
+        </Reveal>
+
+        <div className="project-grid">
+          {projects.map((project, index) => {
+            const description = plainText(project.description);
+            return (
+              <Reveal
+                as="article"
+                className="project-card"
+                delay={(index % 3) * 80}
+                key={project._id}
+              >
+                <button type="button" onClick={() => setSelectedProject(project)}>
+                  <div className="project-card__visual">
+                    <img
+                      src={urlFor(project.image).width(1200).quality(85).url()}
+                      alt=""
+                      loading={index < 2 ? "eager" : "lazy"}
+                    />
+                  </div>
+                  <div className="project-card__content">
+                    <div className="project-card__heading">
+                      <div className="project-card__index">
+                        <span>{String(index + 1).padStart(2, "0")}</span>
+                        <span>{project.date ? dayjs(project.date).format("YYYY") : "Archive"}</span>
+                      </div>
+                      <p>{project.shortTitle || "Product engineering"}</p>
+                      <h3>{project.title}</h3>
+                    </div>
+                    <p className="project-card__excerpt">
+                      {description || "A product case study from the archive."}
+                    </p>
+                    <span className="project-card__read">Read the story <ArrowOutwardRoundedIcon /></span>
+                  </div>
+                </button>
+              </Reveal>
+            );
+          })}
+        </div>
+      </section>
+
+      <section id="testimonials" className="voices section-shell">
+        <Reveal className="section-heading section-heading--voices">
+          <SectionLabel index="03">Trusted by teams</SectionLabel>
+          <h2>Good work leaves<br /><em>an echo.</em></h2>
+        </Reveal>
+
+        <div className="voices__grid">
+          {testimonials.map((testimonial, index) => (
+            <Reveal as="article" className="quote-card" delay={index * 90} key={testimonial._id}>
+              <span className="quote-card__mark">“</span>
+              <blockquote>{testimonial.testimonial}</blockquote>
+              <div className="quote-card__person">
+                {testimonial.profileImage ? (
+                  <img src={testimonial.profileImage} alt="" loading="lazy" />
+                ) : (
+                  <span className="quote-card__initial">{testimonial.name.charAt(0)}</span>
+                )}
+                <div>
+                  <strong>{testimonial.name}</strong>
+                  <p>{testimonial.jobTitle}{testimonial.company ? ` · ${testimonial.company}` : ""}</p>
+                </div>
+                {testimonial.linkedinUrl && (
+                  <a href={testimonial.linkedinUrl} target="_blank" rel="noreferrer" aria-label={`View ${testimonial.name}'s recommendation`}>
+                    <ArrowOutwardRoundedIcon />
+                  </a>
+                )}
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section className="contact-section section-shell">
+        <Reveal className="contact-section__content">
+          <p>Have an ambitious product in mind?</p>
+          <a
+            href="https://www.linkedin.com/in/rohit-madas-41328b178/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Let&apos;s make it real.<ArrowOutwardRoundedIcon />
+          </a>
+        </Reveal>
+
+        <footer className="site-footer">
+          <div className="site-footer__brand">RM<span>®</span></div>
+          <p>Designed with intent. Engineered with care.</p>
+          <div className="site-footer__socials">
+            {about?.socialLinks?.map((link) => {
+              const meta = socialMeta[link.iconName] ?? {
+                label: "Social profile",
+                icon: <ArrowOutwardRoundedIcon />,
+              };
+              return (
+                <a key={`${link.iconName}-${link.url}`} href={link.url} target="_blank" rel="noreferrer" aria-label={meta.label}>
+                  {meta.icon}<span>{meta.label}</span>
+                </a>
+              );
+            })}
+          </div>
+          <p>© {new Date().getFullYear()} Rohit Madas</p>
+        </footer>
+      </section>
+
+      <ProjectDialog project={selectedProject} onClose={() => setSelectedProject(null)} />
+    </main>
   );
 }
