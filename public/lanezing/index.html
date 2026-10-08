@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LaneZing: Highway Bike Racing Game</title>
+<meta name="description" content="LaneZing is a motorcycle highway game. Weave through traffic, pull wheelies and ride from noon to midnight, rain or shine. Free on Google Play for Android.">
+<link rel="canonical" href="https://fewknowme.github.io/lanezing/">
+<meta name="theme-color" content="#111213">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LaneZing">
+<meta property="og:description" content="Weave through traffic, pull wheelies and ride the highway from noon to midnight.">
+<meta property="og:url" content="https://fewknowme.github.io/lanezing/">
+<meta property="og:image" content="https://fewknowme.github.io/lanezing/assets/og-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;800;900&family=Overpass:ital,wght@0,400;0,600;0,800;1,400&family=Overpass+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a night highway read top to bottom. Asphalt ground, a dashed centre line that moves while you scroll,
+   green gantry signs as section headers (the same NORTH 07 signs that span the game's road), one orange accent. */
+:root {
+  --asphalt: #111213;
+  --asphalt-2: #191b1c;
+  --kerb: #26292b;
+  --paint: #f3efe6;          /* road paint / cream wordmark */
+  --muted: #a7a9a6;
+  --orange: #ff6b14;         /* the game's accent */
+  --sign: #0d6a3e;           /* gantry sign green */
+  --sign-edge: #e9f2ec;
+  --lcd: #b6f07a;            /* dash odometer */
+  --display: "Saira Condensed", "Arial Narrow", "Roboto Condensed", sans-serif-condensed, sans-serif;
+  --body: "Overpass", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "Overpass Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step--1: clamp(.82rem, .78rem + .2vw, .9rem);
+  --step-0: clamp(1rem, .95rem + .25vw, 1.12rem);
+  --step-1: clamp(1.25rem, 1.1rem + .6vw, 1.55rem);
+  --step-2: clamp(1.8rem, 1.4rem + 1.8vw, 2.9rem);
+  --step-3: clamp(3.4rem, 2.2rem + 6.5vw, 8.5rem);
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--asphalt); color: var(--paint);
+  font: 400 var(--step-0)/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+/* Asphalt grain */
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+main, header, footer { position: relative; z-index: 1; }
+img, video { max-width: 100%; display: block; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* ---------- top bar with the dash odometer ---------- */
+.bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) var(--gutter) 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: linear-gradient(to bottom, rgba(17,18,19,.92), rgba(17,18,19,0));
+}
+.mark { font: 900 1.55rem/1 var(--display); letter-spacing: .01em; text-decoration: none; transform: skewX(-11deg); display: inline-block; }
+.mark b { color: var(--orange); font-weight: 900; }
+.odo {
+  display: flex; align-items: center; gap: 10px;
+  font: 500 var(--step--1)/1 var(--mono); color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
+}
+.odo output {
+  font: 700 .95rem/1 var(--mono); color: var(--lcd); background: #0d150b; border: 1px solid #2c3a25;
+  padding: 6px 9px; border-radius: 3px; letter-spacing: .12em; font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 0 12px rgba(182,240,122,.12);
+}
+
+/* ---------- hero ---------- */
+.hero { position: relative; min-height: min(92vh, 980px); display: grid; align-items: end; overflow: hidden; isolation: isolate; }
+.hero video, .hero .poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(17,18,19,.88) 0%, rgba(17,18,19,.55) 38%, rgba(17,18,19,0) 66%),
+    linear-gradient(0deg, var(--asphalt) 0%, rgba(17,18,19,0) 34%);
+}
+.hero .wrap { padding-block: 140px 72px; }
+.kicker { font: 700 var(--step--1)/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--orange); display: flex; gap: 12px; align-items: center; }
+.kicker::before { content: ""; width: 34px; height: 4px; background: var(--orange); transform: skewX(-24deg); }
+h1.word {
+  margin: 18px 0 0; font: 900 var(--step-3)/.86 var(--display); letter-spacing: -.005em;
+  transform: skewX(-11deg); transform-origin: left bottom; text-shadow: 0 6px 40px rgba(0,0,0,.45);
+}
+h1.word span { color: var(--orange); }
+.lede { max-width: 34ch; margin: 22px 0 0; font-size: var(--step-1); line-height: 1.45; color: #e6e2d8; text-wrap: balance; }
+.stores { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.store {
+  display: inline-flex; flex-direction: column; justify-content: center; gap: 3px;
+  min-width: 190px; padding: 12px 22px 11px; text-decoration: none;
+  border: 1.5px solid rgba(243,239,230,.55); border-radius: 6px; background: rgba(17,18,19,.5);
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.store small { font: 600 .72rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.store strong { font: 800 1.2rem/1.1 var(--body); }
+.store.primary { background: var(--orange); border-color: var(--orange); color: #160800; }
+.store.primary small { color: #3b1600; }
+.store:hover { transform: translateY(-2px); border-color: var(--paint); }
+.store.primary:hover { border-color: #ffd2b8; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; max-width: 34rem; margin-top: 34px; font: 600 var(--step--1)/1.3 var(--mono); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.facts span b { color: var(--paint); font-weight: 700; }
+
+/* ---------- trailer ---------- */
+.trailer { padding-block: 24px 64px; }
+.screen { margin-top: 28px; border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 1px #2a2d2f; aspect-ratio: 16 / 9; max-width: 100%; }
+.screen video { width: 100%; height: 100%; object-fit: cover; }
+.trailer .meta { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 12px; font: 600 var(--step--1)/1.3 var(--mono); color: var(--muted); letter-spacing: .05em; }
+
+/* ---------- lane divider: dashed centre line that moves with the road ---------- */
+.lane {
+  height: 64px; position: relative;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 3px), var(--paint) calc(50% - 3px), var(--paint) calc(50% + 3px), transparent calc(50% + 3px)) 0 0 / 100% 36px repeat-y;
+  -webkit-mask: linear-gradient(transparent, #000 25%, #000 75%, transparent);
+          mask: linear-gradient(transparent, #000 25%, #000 75%, transparent);
+  opacity: .7; background-position-y: var(--road, 0px);
+}
+.lane::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 18px, var(--asphalt) 18px 36px); background-position-y: var(--road, 0px); }
+
+/* ---------- gantry sign headers ---------- */
+section { padding-block: 40px 80px; }
+.gantry {
+  display: inline-grid; grid-template-columns: auto auto; align-items: center; gap: 4px 22px;
+  background: var(--sign); color: var(--sign-edge); padding: 14px 20px 12px; border-radius: 9px;
+  box-shadow: inset 0 0 0 3px var(--sign), inset 0 0 0 5px var(--sign-edge), 0 18px 40px rgba(0,0,0,.45);
+  font: 800 var(--step--1)/1.15 var(--body); letter-spacing: .1em; text-transform: uppercase;
+}
+.gantry .to { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 22px; font-family: var(--mono); font-weight: 700; letter-spacing: .06em; opacity: .9; }
+.gantry .arrow { font-size: 1.25em; line-height: .8; }
+h2 { margin: 26px 0 0; font: 800 var(--step-2)/1.02 var(--display); letter-spacing: .005em; text-wrap: balance; max-width: 18ch; }
+h2 em { font-style: normal; color: var(--orange); }
+.intro { max-width: 60ch; color: #d9d6cd; margin-top: 14px; }
+
+/* ---------- ride features: asymmetric rows ---------- */
+.rows { display: grid; gap: clamp(48px, 7vw, 96px); margin-top: 48px; }
+.row { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(22px, 4vw, 56px); align-items: center; }
+.row:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); }
+.row:nth-child(even) figure { order: 2; }
+figure { margin: 0; position: relative; }
+.shot { border-radius: 10px; overflow: hidden; background: var(--kerb); box-shadow: 0 30px 60px -20px rgba(0,0,0,.7); aspect-ratio: 16 / 9; }
+.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.row:hover .shot img { transform: scale(1.025); }
+figcaption { margin-top: 10px; font: 600 var(--step--1)/1.3 var(--mono); color: var(--muted); letter-spacing: .05em; }
+.copy { min-width: 0; }
+.copy h3 { margin: 0; font: 800 var(--step-1)/1.1 var(--display); font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); }
+.copy p { margin: 12px 0 0; color: #d9d6cd; max-width: 46ch; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding: 0; list-style: none; }
+.tags li { font: 600 .78rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 7px 10px; border: 1px solid #3a3d3f; border-radius: 4px; color: #cfccc3; }
+
+/* ---------- conditions strip ---------- */
+.clock { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 40px; }
+.clock figure .shot { aspect-ratio: 4 / 5; border-radius: 8px; }
+.clock figure .shot img { object-position: 50% 60%; }
+.clock figcaption { display: flex; justify-content: space-between; gap: 8px; }
+.clock figcaption b { color: var(--paint); font-weight: 700; }
+.road { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; padding: 0; list-style: none; }
+.road li { font: 800 .82rem/1 var(--body); letter-spacing: .1em; text-transform: uppercase; padding: 10px 14px 8px; border-radius: 6px; background: #f2c230; color: #1b1608; box-shadow: inset 0 0 0 2px #f2c230, inset 0 0 0 3.5px #1b1608; }
+
+/* ---------- bikes ---------- */
+.bikes { margin-top: 40px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 480px; font-variant-numeric: tabular-nums; }
+th { text-align: left; font: 700 .76rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 0 12px 12px; border-bottom: 1px solid var(--kerb); }
+td { padding: 16px 12px; border-bottom: 1px solid var(--kerb); vertical-align: middle; }
+td.name .n { display: inline-block; font: 900 1.5rem/1 var(--display); white-space: nowrap; transform: skewX(-8deg); }
+td.name .sub { display: none; margin-top: 6px; font: 400 .9rem/1.4 var(--body); color: #bfbcb3; }
+td.char { color: #d9d6cd; max-width: 38ch; }
+td.num { font: 700 1rem/1 var(--mono); white-space: nowrap; text-align: right; }
+.speed { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; min-width: 120px; }
+.speed i { display: block; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #3b3f41, var(--orange)); width: calc(var(--v) / 240 * 100%); }
+.speed span { font: 700 1rem/1 var(--mono); }
+.scale { display: flex; justify-content: space-between; font: 500 .7rem/1 var(--mono); color: #6f7270; margin: 6px 0 0; padding-right: 64px; }
+tr.starter td.num { color: var(--lcd); }
+
+/* ---------- career ---------- */
+.career { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 64px); align-items: start; margin-top: 40px; }
+ol.missions { list-style: none; margin: 0; padding: 0; counter-reset: m; border-left: 4px dashed #3a3d3f; }
+ol.missions li { counter-increment: m; position: relative; padding: 9px 0 9px 22px; font: 600 1.02rem/1.3 var(--body); }
+ol.missions li::before { content: counter(m, decimal-leading-zero); position: absolute; left: -54px; width: 38px; text-align: right; font: 700 .85rem/1.6 var(--mono); color: var(--orange); }
+ol.missions { margin-left: 54px; }
+
+/* ---------- everyone ---------- */
+.ease { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 40px; border-top: 1px solid var(--kerb); }
+.ease div { padding: 22px 22px 24px 0; border-bottom: 1px solid var(--kerb); min-width: 0; }
+.ease h3 { margin: 0; font: 800 1.05rem/1.2 var(--body); letter-spacing: .02em; }
+.ease p { margin: 8px 0 0; color: #bfbcb3; font-size: var(--step--1); line-height: 1.55; }
+
+/* ---------- final call ---------- */
+.finish { text-align: left; padding-block: 90px 110px; position: relative; overflow: hidden; }
+.finish .big { font: 900 clamp(2.6rem, 1.6rem + 5vw, 6rem)/.9 var(--display); transform: skewX(-11deg); transform-origin: left; margin: 0; max-width: 14ch; }
+.finish .big span { color: var(--orange); }
+.finish p { color: #d9d6cd; max-width: 52ch; margin-top: 18px; }
+
+/* ---------- footer ---------- */
+footer { border-top: 1px solid var(--kerb); padding-block: 40px 56px; color: var(--muted); font-size: var(--step--1); }
+footer .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 28px; }
+footer h4 { margin: 0 0 10px; font: 700 .76rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--paint); }
+footer ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+footer a { text-decoration-color: rgba(255,107,20,.6); text-underline-offset: 3px; }
+footer a:hover { color: var(--paint); }
+.credits { columns: 2 260px; column-gap: 32px; }
+.credits li { break-inside: avoid; }
+
+/* ---------- entrance ---------- */
+@keyframes rise { from { transform: translateY(18px); opacity: .001; } to { transform: none; opacity: 1; } }
+.hero .kicker, .hero h1, .hero .lede, .hero .stores, .hero .facts { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
+.hero h1 { animation-delay: .08s; } .hero .lede { animation-delay: .18s; } .hero .stores { animation-delay: .28s; } .hero .facts { animation-delay: .36s; }
+.hero h1 { animation-name: rise-skew; }
+@keyframes rise-skew { from { transform: skewX(-11deg) translateY(22px); opacity: .001; } to { transform: skewX(-11deg); opacity: 1; } }
+
+@media (max-width: 860px) {
+  .row, .row:nth-child(even) { grid-template-columns: minmax(0, 1fr); }
+  .row:nth-child(even) figure { order: 0; }
+  .clock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .career { grid-template-columns: minmax(0, 1fr); }
+  .ease { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  th.char-h, td.char { display: none; }
+  td.name .sub { display: block; }
+  footer .cols { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  .bikes { overflow: visible; }
+  .bikes table, .bikes tbody { display: block; min-width: 0; }
+  .bikes thead, .scale { display: none; }
+  .bikes tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; padding: 16px 0; border-bottom: 1px solid var(--kerb); }
+  .bikes td { padding: 0; border: 0; }
+  .bikes td.name { grid-column: 1 / -1; }
+  .bikes td:nth-child(3) { min-width: 0; }
+  .bikes td.num { align-self: center; }
+  .speed { min-width: 0; }
+}
+@media (max-width: 520px) {
+  .odo span { display: none; }
+  .ease { grid-template-columns: minmax(0, 1fr); }
+  .hero .wrap { padding-block: 120px 48px; }
+  .store { min-width: 0; flex: 1 1 150px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero video { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="mark" href="#top" aria-label="LaneZing home">LANE<b>ZING</b></a>
+  <div class="odo" aria-hidden="true"><span>Trip</span><output id="odo">000.0 km</output></div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="LaneZing">
+    <img class="poster" src="assets/hero-poster.jpg" alt="" width="1920" height="1080">
+    <video id="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true">
+      <source src="assets/hero.mp4" type="video/mp4">
+    </video>
+    <div class="wrap">
+      <p class="kicker">Motorcycle highway game</p>
+      <h1 class="word">LANE<span>ZING</span></h1>
+      <p class="lede">Weave through traffic, pull wheelies and ride the highway from noon to midnight, rain or shine.</p>
+      <div class="stores">
+        <a class="store primary" href="https://play.google.com/store/apps/details?id=com.rmdevelopers.lanezing" target="_blank" rel="noopener" id="play-link"><small>Get it on</small><strong>Google Play</strong></a>
+        <a class="store" href="#get" id="ios-link"><small>Coming soon</small><strong>App Store</strong></a>
+      </div>
+      <p class="facts"><span><b>5</b> bikes</span><span><b>10</b> missions</span><span><b>7</b> languages</span><span><b>Free</b> to play</span></p>
+    </div>
+  </section>
+
+  <div class="lane" aria-hidden="true"></div>
+
+  <section class="trailer" id="trailer">
+    <div class="wrap">
+      <div class="gantry" aria-hidden="true"><span>North 07</span><span class="arrow">↑</span><span class="to"><span>Trailer</span><span>0.2 km</span></span></div>
+      <h2>Forty seconds of <em>real</em> gameplay.</h2>
+      <div class="screen"><video controls preload="none" playsinline poster="assets/trailer-poster.jpg" aria-label="LaneZing gameplay trailer"><source src="assets/trailer-720p.mp4" type="video/mp4"></video></div>
+      <p class="meta"><span>Recorded in-game</span><span>No cutscenes</span><span>Sound on</span></p>
+    </div>
+  </section>
+
+  <div class="lane" aria-hidden="true"></div>
+
+  <section id="ride">
+    <div class="wrap">
+      <div class="gantry" aria-hidden="true"><span>North 07</span><span class="arrow">↑</span><span class="to"><span>The ride</span><span>0.4 km</span></span></div>
+      <h2>Every gap is a <em>decision</em>.</h2>
+      <p class="intro">Cars, vans, trucks and buses drift between lanes, signal before they move and pull over when you honk. Thread between them, build close-pass combos and keep the throttle open as long as you dare.</p>
+
+      <div class="rows">
+        <div class="row">
+          <figure><div class="shot"><img src="assets/thread.jpg" alt="Chase view: the rider squeezes between a tanker and a white van on a desert highway at 113 km/h." width="1600" height="900" loading="lazy"></div><figcaption>Desert stretch · 113 km/h</figcaption></figure>
+          <div class="copy">
+            <h3>Thread the traffic</h3>
+            <p>Close passes score, chains of them score more. Traffic reacts to you: indicators, lane changes, brake lights and a horn that clears the lane ahead.</p>
+            <ul class="tags"><li>Close-pass combos</li><li>Horn</li><li>One-way or two-way</li></ul>
+          </div>
+        </div>
+        <div class="row">
+          <figure><div class="shot"><img src="assets/cockpit.jpg" alt="First-person view over the handlebars as a bus overtakes on a busy town road." width="1600" height="900" loading="lazy"></div><figcaption>Town · first-person cockpit</figcaption></figure>
+          <div class="copy">
+            <h3>Ride from the saddle</h3>
+            <p>Switch any time between a cockpit view with working mirrors and gauges and a chase camera behind the rider. Steer with buttons, a thumb pad or by tilting the phone.</p>
+            <ul class="tags"><li>Cockpit or chase cam</li><li>Live mirrors</li><li>Tilt steering</li></ul>
+          </div>
+        </div>
+        <div class="row">
+          <figure><div class="shot"><img src="assets/wheelie.jpg" alt="The rider holds a wheelie at 141 km/h with the front wheel high." width="1600" height="900" loading="lazy"></div><figcaption>Farmland · 141 km/h wheelie</figcaption></figure>
+          <div class="copy">
+            <h3>Wheelie when it's clear</h3>
+            <p>Hold the wheelie above 40 km/h and the streak keeps paying. Brake and the front comes down. Braking always wins.</p>
+            <ul class="tags"><li>Wheelie streaks</li><li>Crash physics</li><li>Debris</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lane" aria-hidden="true"></div>
+
+  <section id="road">
+    <div class="wrap">
+      <div class="gantry" aria-hidden="true"><span>North 07</span><span class="arrow">↑</span><span class="to"><span>Conditions</span><span>12.6 km</span></span></div>
+      <h2>Noon to midnight, <em>monsoon</em> included.</h2>
+      <p class="intro">The sky keeps time while you ride. Street lamps flicker on at dusk, rain turns the tarmac into a mirror and every stretch of road changes as the kilometres add up.</p>
+      <div class="clock">
+        <figure><div class="shot"><img src="assets/day.jpg" alt="Midday on a forest highway, overtaking a box truck." width="1600" height="900" loading="lazy"></div><figcaption><b>13:30</b><span>Forest</span></figcaption></figure>
+        <figure><div class="shot"><img src="assets/sunset.jpg" alt="Sunset over sand dunes, passing a truck." width="1600" height="900" loading="lazy"></div><figcaption><b>18:06</b><span>Desert</span></figcaption></figure>
+        <figure><div class="shot"><img src="assets/night.jpg" alt="Night ride under street lamps beside a truck." width="1600" height="900" loading="lazy"></div><figcaption><b>22:00</b><span>Street lamps</span></figcaption></figure>
+        <figure><div class="shot"><img src="assets/rain.jpg" alt="Rain on a town street with puddles and other motorcycles ahead." width="1600" height="900" loading="lazy"></div><figcaption><b>16:54</b><span>Monsoon</span></figcaption></figure>
+      </div>
+      <ul class="road" aria-label="Road sections">
+        <li>Forest</li><li>Farmland</li><li>Desert sand</li><li>Town streets</li><li>Tunnels</li><li>Flyovers</li><li>Roadworks</li><li>Toll plaza</li><li>Service road</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="lane" aria-hidden="true"></div>
+
+  <section id="bikes">
+    <div class="wrap">
+      <div class="gantry" aria-hidden="true"><span>North 07</span><span class="arrow">↑</span><span class="to"><span>Garage</span><span>27.9 km</span></span></div>
+      <h2>Five bikes. <em>Earn</em> the rest.</h2>
+      <p class="intro">Start on the LZ 650 and earn coins on every ride with traffic. Upgrade acceleration, braking and handling, then pick your paint, stickers and gloves.</p>
+      <div class="bikes" role="region" aria-label="Bike line-up" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">Bike</th><th scope="col" class="char-h">Character</th><th scope="col">Top speed</th><th scope="col" style="text-align:right">Price</th></tr></thead>
+          <tbody>
+            <tr class="starter"><td class="name"><span class="n">LZ 650</span><span class="sub">Friendly all-rounder. Easy steering, steady in rain.</span></td><td class="char">Friendly all-rounder. Easy steering, steady in rain.</td><td><div class="speed" style="--v:165"><i></i><span>165</span></div></td><td class="num">Starter</td></tr>
+            <tr><td class="name"><span class="n">QE 250</span><span class="sub">Light two-stroke. Quick off the line, out of breath early.</span></td><td class="char">Light two-stroke. Quick off the line, out of breath early.</td><td><div class="speed" style="--v:150"><i></i><span>150</span></div></td><td class="num">35,000</td></tr>
+            <tr><td class="name"><span class="n">UX 900</span><span class="sub">Heavy 900 twin. Planted and strong at speed.</span></td><td class="char">Heavy 900 twin. Planted and strong at speed.</td><td><div class="speed" style="--v:190"><i></i><span>190</span></div></td><td class="num">45,000</td></tr>
+            <tr><td class="name"><span class="n">JC 650</span><span class="sub">Light cafe racer. Sharp, quick and twitchy.</span></td><td class="char">Light cafe racer. Sharp, quick and twitchy.</td><td><div class="speed" style="--v:210"><i></i><span>210</span></div></td><td class="num">55,000</td></tr>
+            <tr><td class="name"><span class="n">QS 800</span><span class="sub">Naked triple. Top speed, big brakes, lively at 200+.</span></td><td class="char">Naked triple. Top speed, big brakes, lively at 200+.</td><td><div class="speed" style="--v:225"><i></i><span>225</span></div></td><td class="num">70,000</td></tr>
+          </tbody>
+        </table>
+        <p class="scale" aria-hidden="true"><span>0</span><span>km/h</span><span>240</span></p>
+      </div>
+      <p class="intro" style="font-size:var(--step--1);color:var(--muted)">Prices are in in-game coins earned by riding. Nothing in the garage costs real money.</p>
+    </div>
+  </section>
+
+  <div class="lane" aria-hidden="true"></div>
+
+  <section id="career">
+    <div class="wrap">
+      <div class="gantry" aria-hidden="true"><span>North 07</span><span class="arrow">↑</span><span class="to"><span>Career</span><span>33.1 km</span></span></div>
+      <h2>A route with <em>ten</em> stops, and a new one every day.</h2>
+      <div class="career">
+        <div class="copy">
+          <p>Each mission sets its own conditions: night shifts, monsoon runs, oncoming traffic, a tunnel or a desert crossing. A daily challenge gives every rider the same road for the day, and road goals pay out as your total distance grows.</p>
+          <figure style="margin-top:22px"><div class="shot"><img src="assets/career.jpg" alt="Career page listing the daily challenge, road goals and missions." width="1600" height="900" loading="lazy"></div><figcaption>Career · daily challenge and road goals</figcaption></figure>
+        </div>
+        <ol class="missions" aria-label="Career missions">
+          <li>Find your rhythm</li><li>Thread the traffic</li><li>Stop on a dime</li><li>Night shift</li><li>Monsoon run</li>
+          <li>Open horizon</li><li>Against the flow</li><li>Midnight monsoon</li><li>Tunnel run</li><li>Desert crossing</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <div class="lane" aria-hidden="true"></div>
+
+  <section id="everyone">
+    <div class="wrap">
+      <div class="gantry" aria-hidden="true"><span>North 07</span><span class="arrow">↑</span><span class="to"><span>Your way</span><span>38.5 km</span></span></div>
+      <h2>Set it up for <em>your</em> hands.</h2>
+      <div class="ease">
+        <div><h3>Seven languages</h3><p>English, हिन्दी, Español, Português, Bahasa Indonesia, Deutsch and Français.</p></div>
+        <div><h3>Three ways to steer</h3><p>On-screen buttons, a thumb pad or tilt. Resize the controls and move the horn to either thumb.</p></div>
+        <div><h3>Automatic throttle</h3><p>Let the bike hold the gas and keep both thumbs for steering and braking. Or hold it yourself.</p></div>
+        <div><h3>Easy on the eyes</h3><p>Reduce flashing, switch to a high-contrast HUD with solid panels, or make all the small print larger.</p></div>
+        <div><h3>Plays offline</h3><p>Ride anywhere. Progress stays on your phone and needs no account.</p></div>
+        <div><h3>Ads only when you ask</h3><p>The game is free. A rewarded ad plays only when you tap WATCH AD to double a ride's pay or collect free coins.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="finish" id="get">
+    <div class="wrap">
+      <p class="big">Find your <span>gap</span>.</p>
+      <p>LaneZing is out now on Google Play, free to play on Android phones and tablets. The iPhone and iPad version is coming to the App Store.</p>
+      <div class="stores">
+        <a class="store primary" href="https://play.google.com/store/apps/details?id=com.rmdevelopers.lanezing" target="_blank" rel="noopener"><small>Get it on</small><strong>Google Play</strong></a>
+        <a class="store" href="#get"><small>Coming soon</small><strong>App Store</strong></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <a class="mark" href="#top">LANE<b>ZING</b></a>
+      <p>© 2026 RM Developers</p>
+      <ul>
+        <li><a href="https://github.com/Fewknowme/PrivacyPolicy/blob/main/LaneZing%20-%20Privacy%20Policy.md">Privacy policy</a></li>
+        <li><a href="#credits">Credits</a></li>
+      </ul>
+    </div>
+    <div id="credits">
+      <h4>Credits</h4>
+      <ul class="credits">
+        <li><a href="https://sketchfab.com/3d-models/motorcycle-custom-bike-jawa-low-poly-13771fe558604aedae09b5157029e790" rel="noopener" target="_blank">LZ 650, JC 650, UX 900 base model</a> by kreems, CC BY 4.0, modified</li>
+        <li><a href="https://sketchfab.com/3d-models/low-poly-motorcycle-2-9e79295e99654e2a9fa930b5139a7d84" rel="noopener" target="_blank">QS 800 base model</a> by Sidra, CC BY 4.0, modified</li>
+        <li><a href="https://sketchfab.com/3d-models/2-stroke-dirt-bike-703c2391f70c47bea4f86412c8b4738b" rel="noopener" target="_blank">QE 250 base model</a> by moto man 135, CC BY 4.0, modified</li>
+        <li><a href="https://sketchfab.com/3d-models/the-silverbullet-rider-rigged-c7f582f4de5d4894a5159aa22bbee790" rel="noopener" target="_blank">Rider</a> by tegnemaskin, CC BY 4.0, modified</li>
+        <li>Asphalt, terrain, sky and pine: Poly Haven, CC0</li>
+        <li>Town people and animals: Quaternius, CC0</li>
+        <li>Garage music "Pure Raceway": MintoDog, CC0</li>
+        <li>Ride and crash sounds: BigSoundBank, Kenney and Freesound contributors, CC0</li>
+        <li><a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener" target="_blank">Creative Commons Attribution 4.0</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Trip odometer and the moving centre line: scroll progress is shown as distance along the route (41.2 km, the
+// figure on the game's own gantry sign), and the lane dashes slide past as you scroll.
+(function () {
+  var odo = document.getElementById('odo');
+  var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ticking = false;
+  function update() {
+    ticking = false;
+    var max = Math.max(1, root.scrollHeight - window.innerHeight);
+    var km = Math.min(1, window.scrollY / max) * 41.2;
+    odo.textContent = ('00' + km.toFixed(1)).slice(-5) + ' km';
+    if (!reduce) root.style.setProperty('--road', (window.scrollY * .6 % 36).toFixed(1) + 'px');
+  }
+  // Each gantry sign shows how far down the route its section sits, on the same 41.2 km scale as the odometer.
+  function signs() {
+    var max = Math.max(1, root.scrollHeight - window.innerHeight);
+    document.querySelectorAll('.gantry .to span:last-child').forEach(function (el) {
+      var y = el.closest('section').getBoundingClientRect().top + window.scrollY - window.innerHeight * .35;
+      el.textContent = (Math.min(1, Math.max(0, y / max)) * 41.2).toFixed(1) + ' km';
+    });
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', signs);
+  window.addEventListener('load', signs);
+  update(); signs();
+  // Keep the hero video quiet for anyone who asked for less motion.
+  var v = document.getElementById('hero-video');
+  if (v && reduce) { v.removeAttribute('autoplay'); try { v.pause(); } catch (e) {} }
+  else if (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+})();
+</script>
+</body>
+</html>

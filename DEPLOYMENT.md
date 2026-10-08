@@ -9,6 +9,7 @@ The workflow uploads `.output/public`. Keep public files in `public/`:
 
 - `/app-ads.txt` contains the existing Google publisher declaration.
 - `/patang-pop/privacy.html` preserves the policy URL used by older game builds.
+- `/lanezing/` is the static LaneZing game landing page (`index.html` and `assets/`).
 
 The build verifies these files are copied unchanged into the deployment artifact.
 
@@ -18,6 +19,6 @@ or replace that site in this repository. Verify it remains accessible after
 portfolio deployments.
 
 Deploy by pushing `v2` or dispatching the workflow on `v2`. After the Pages job
-succeeds, verify the portfolio renders the redesigned hero and check all three
+succeeds, verify the portfolio renders the redesigned hero and check all
 public paths above. Avoid the old `npm run deploy` command, which targets
 `gh-pages` rather than this workflow.

@@ -41,6 +41,7 @@ jobs:
           test -s .output/public/index.html
           cmp public/app-ads.txt .output/public/app-ads.txt
           cmp public/patang-pop/privacy.html .output/public/patang-pop/privacy.html
+          cmp public/lanezing/index.html .output/public/lanezing/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
