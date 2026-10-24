@@ -10,6 +10,10 @@ The workflow uploads `.output/public`. Keep public files in `public/`:
 - `/app-ads.txt` contains the existing Google publisher declaration.
 - `/patang-pop/privacy.html` preserves the policy URL used by older game builds.
 - `/lanezing/` is the static LaneZing game landing page (`index.html` and `assets/`).
+- `/patang-pop/` is the static Patang Pop landing page (`index.html` and `assets/`),
+  next to the older `privacy.html`.
+- `/robots.txt` and `/sitemap.xml` list the public pages for search engines. Add new
+  landing pages to the sitemap.
 
 The build verifies these files are copied unchanged into the deployment artifact.
 

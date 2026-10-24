@@ -42,6 +42,9 @@ jobs:
           cmp public/app-ads.txt .output/public/app-ads.txt
           cmp public/patang-pop/privacy.html .output/public/patang-pop/privacy.html
           cmp public/lanezing/index.html .output/public/lanezing/index.html
+          cmp public/patang-pop/index.html .output/public/patang-pop/index.html
+          cmp public/robots.txt .output/public/robots.txt
+          cmp public/sitemap.xml .output/public/sitemap.xml
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
