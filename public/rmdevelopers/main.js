@@ -229,7 +229,7 @@
     const mm = gsap.matchMedia();
     const state = { tween: null, trigger: null };
 
-    mm.add("(min-width: 1024px) and (min-height: 620px)", () => {
+    mm.add("(min-width: 1024px) and (min-height: 700px)", () => {
       root.classList.add("h-scroll");
       const distance = () => track.scrollWidth - innerWidth;
 
@@ -286,7 +286,7 @@
       };
     });
 
-    mm.add("(max-width: 1023px), (max-height: 619px)", () => {
+    mm.add("(max-width: 1023px), (max-height: 699px)", () => {
       panels.forEach((panel) => {
         ScrollTrigger.create({
           trigger: panel, start: "top 55%", end: "bottom 45%",

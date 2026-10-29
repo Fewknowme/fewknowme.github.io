@@ -296,6 +296,8 @@ p { margin: 0; }
   border: 0; border-radius: 0;
   background: transparent;
 }
+/* keep the phone inside the pinned 100vh panel on shorter laptop screens */
+.h-scroll .app__device--portrait .device { width: min(clamp(220px, 21vw, 300px), calc((100vh - 230px) * 9 / 19)); }
 
 /* ---------- gallery ---------- */
 
