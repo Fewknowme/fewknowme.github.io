@@ -114,7 +114,7 @@
     const hero = $(".hero");
     const canvas = $(".hero__canvas");
     const ctx = canvas.getContext("2d");
-    const colors = ["#7fd8a9", "#ffd45a", "#ff6a2b", "#b06bff", "#3dc8ff"];
+    const colors = ["#ffb547", "#ffb547", "#f3f0ea"];
     const mouse = { x: -9999, y: -9999 };
     let dots = [];
     let w = 0, h = 0, running = true;
