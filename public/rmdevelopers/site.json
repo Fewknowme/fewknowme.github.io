@@ -1,0 +1,163 @@
+{
+  "seo": {
+    "title": "RMDevelopers — Offline-first Android apps & games from Pune",
+    "description": "RMDevelopers is an independent Android studio by Rohit Madas. Explore ArthZen, Local Notes, LaneZing and Patang Pop: private, offline-first apps and games, free on Google Play.",
+    "keywords": "RMDevelopers, Android apps, offline apps, Indian app developer, ArthZen expense tracker, Local Notes offline notepad, LaneZing bike racing game, Patang Pop kite puzzle, Rohit Madas",
+    "url": "https://fewknowme.github.io/rmdevelopers/",
+    "ogImage": "https://fewknowme.github.io/rmdevelopers/assets/og.jpg",
+    "themeColor": "#08080c",
+    "locale": "en_IN"
+  },
+
+  "studio": {
+    "name": "RMDevelopers",
+    "founder": "Rohit Madas",
+    "location": "Pune, India",
+    "playStoreUrl": "https://play.google.com/store/apps/developer?id=RMDevelopers",
+    "portfolioUrl": "https://fewknowme.github.io/",
+    "links": [
+      { "label": "Google Play", "url": "https://play.google.com/store/apps/developer?id=RMDevelopers" },
+      { "label": "Portfolio", "url": "https://fewknowme.github.io/" },
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/rohit-madas-41328b178/" },
+      { "label": "GitHub", "url": "https://github.com/Fewknowme" }
+    ]
+  },
+
+  "hero": {
+    "eyebrow": "Independent Android studio · Pune, India",
+    "lines": ["Small apps.", "Big care."],
+    "sub": "We build calm, private, offline-first apps and games for Android. No sign-up walls, no clutter — just tools and play that respect your phone and your time.",
+    "primaryCta": { "label": "Explore the apps", "url": "#apps" },
+    "secondaryCta": { "label": "See us on Google Play", "url": "https://play.google.com/store/apps/developer?id=RMDevelopers" }
+  },
+
+  "marquee": [
+    "Offline first",
+    "Private by design",
+    "Made in Pune",
+    "Free on Google Play",
+    "No sign-up walls",
+    "Speaks your language"
+  ],
+
+  "stats": [
+    { "value": 4, "suffix": "", "label": "Apps & games live on Google Play" },
+    { "value": 500, "suffix": "", "label": "Offline kite puzzles in Patang Pop" },
+    { "value": 17, "suffix": "", "label": "Motorcycles to collect in LaneZing" },
+    { "value": 9, "suffix": "", "label": "Languages in Local Notes" }
+  ],
+
+  "apps": [
+    {
+      "id": "arthzen",
+      "name": "ArthZen",
+      "type": "App",
+      "category": "Finance",
+      "schemaCategory": "FinanceApplication",
+      "tagline": "A calmer relationship with your money.",
+      "summary": "A private, local-first ledger for everyday money. Record income and expenses by hand, set an essential-spending budget, plan your savings and understand it all through simple, explainable summaries — without ever connecting a bank account.",
+      "features": [
+        "Never connects to your bank or reads SMS",
+        "Budgets and savings plans with clear arithmetic",
+        "Records stored locally, optional cloud backup",
+        "Export to CSV or a full backup anytime"
+      ],
+      "packageId": "com.arth.zen",
+      "playUrl": "https://play.google.com/store/apps/details?id=com.arth.zen",
+      "icon": "assets/arthzen-icon.webp",
+      "screenshots": ["assets/arthzen-1.webp", "assets/arthzen-2.webp", "assets/arthzen-3.webp", "assets/arthzen-4.webp"],
+      "orientation": "portrait",
+      "theme": { "bg": "#0c1f18", "accent": "#7fd8a9", "glow": "#1f6b4c" },
+      "links": []
+    },
+    {
+      "id": "localnotes",
+      "name": "Local Notes",
+      "type": "App",
+      "category": "Productivity",
+      "schemaCategory": "UtilitiesApplication",
+      "tagline": "Notes that stay on your phone.",
+      "summary": "A private, offline notepad. Type or dictate, colour-code what matters, attach photos and keep everything on your device. No account, no cloud, no sign-up — and it speaks nine languages.",
+      "features": [
+        "Voice notes in 10 Indian & global languages",
+        "Colours, tags, pins and instant search",
+        "Up to 8 photos per note",
+        "Works fully offline — no Local Notes server"
+      ],
+      "packageId": "com.asynclocalnotes.app",
+      "playUrl": "https://play.google.com/store/apps/details?id=com.asynclocalnotes.app",
+      "icon": "assets/localnotes-icon.webp",
+      "screenshots": ["assets/localnotes-1.webp", "assets/localnotes-2.webp", "assets/localnotes-3.webp", "assets/localnotes-4.webp"],
+      "orientation": "portrait",
+      "theme": { "bg": "#17142b", "accent": "#ffd45a", "glow": "#6c5ce7" },
+      "links": []
+    },
+    {
+      "id": "lanezing",
+      "name": "LaneZing",
+      "type": "Game",
+      "category": "Racing",
+      "schemaCategory": "GameApplication",
+      "tagline": "Twist the throttle. Thread the traffic.",
+      "summary": "Highway bike racing built for speed. Split lanes between cars, buses and trucks, race superbikes on GP circuits and get muddy on dirt tracks — through day, night and monsoon rain. Plays fully offline.",
+      "features": [
+        "Endless highway, GP circuits and dirt racing",
+        "17 motorcycles with upgradeable garages",
+        "Day, night and monsoon rain on wet roads",
+        "Tilt or touch controls, no internet needed"
+      ],
+      "packageId": "com.rmdevelopers.lanezing",
+      "playUrl": "https://play.google.com/store/apps/details?id=com.rmdevelopers.lanezing",
+      "icon": "assets/lanezing-icon.webp",
+      "screenshots": ["assets/lanezing-1.webp", "assets/lanezing-2.webp", "assets/lanezing-3.webp", "assets/lanezing-4.webp"],
+      "orientation": "landscape",
+      "theme": { "bg": "#1a0d06", "accent": "#ff6a2b", "glow": "#c2361a" },
+      "links": [{ "label": "Game site", "url": "/lanezing/" }]
+    },
+    {
+      "id": "patangpop",
+      "name": "Patang Pop",
+      "type": "Game",
+      "category": "Puzzle",
+      "schemaCategory": "GameApplication",
+      "tagline": "Which kite can fly first?",
+      "summary": "A colourful kite puzzle. Follow each kite's arrow, tap when its path is clear and empty the sky in the right order. 500 hand-shaped offline levels, endless random skies and no time limit — at your own pace.",
+      "features": [
+        "500 offline puzzles, all in the download",
+        "No time limit, free undo, saved hints",
+        "Endless random skies — always solvable",
+        "Unlock kite colours, no purchases"
+      ],
+      "packageId": "com.rmdevelopers.patangpop",
+      "playUrl": "https://play.google.com/store/apps/details?id=com.rmdevelopers.patangpop",
+      "icon": "assets/patangpop-icon.webp",
+      "screenshots": ["assets/patangpop-1.webp", "assets/patangpop-2.webp", "assets/patangpop-3.webp", "assets/patangpop-4.webp"],
+      "orientation": "portrait",
+      "theme": { "bg": "#071a3a", "accent": "#ffc531", "glow": "#1e7bf0" },
+      "links": [
+        { "label": "Game site", "url": "/patang-pop/" },
+        { "label": "Privacy", "url": "/patang-pop/privacy.html" }
+      ]
+    }
+  ],
+
+  "principles": [
+    { "title": "Offline when it matters", "text": "Notes, races and puzzles work with no connection. Your phone is the product, not a thin window onto a server." },
+    { "title": "Private by default", "text": "Records, notes and voice transcripts live on your device. We never read your bank messages or ask for more than a feature needs." },
+    { "title": "Respect for your time", "text": "No forced sign-ups, no countdown pressure, no maze of menus. Open the app and get on with it." },
+    { "title": "Built for India and beyond", "text": "Hindi, Bengali, Tamil, Telugu, Marathi, Spanish, Portuguese, Indonesian and more — apps that speak the way you do." }
+  ],
+
+  "faq": [
+    { "q": "Who is RMDevelopers?", "a": "RMDevelopers is the independent Android studio of Rohit Madas, a frontend and mobile engineer based in Pune, India. We design and ship small, private, offline-first apps and games." },
+    { "q": "Are the apps free?", "a": "Yes. All four are free to download on Google Play. Some are supported by ads, and ArthZen offers an optional Premium plan for deeper analysis and an ad-free experience." },
+    { "q": "Do the apps need an internet connection?", "a": "Mostly no. Local Notes, LaneZing and Patang Pop work fully offline. ArthZen keeps your records on the device and only goes online for optional cloud backup." },
+    { "q": "Where is my data stored?", "a": "On your phone. Local Notes has no server at all, and ArthZen never connects to your bank. Each app's Google Play listing links to its full privacy policy." },
+    { "q": "How do I report a bug or suggest a feature?", "a": "Use the developer contact on any app's Google Play listing, or reach out on LinkedIn. Every message is read." }
+  ],
+
+  "cta": {
+    "title": ["Get them all", "on Google Play."],
+    "button": { "label": "Open RMDevelopers on Google Play", "url": "https://play.google.com/store/apps/developer?id=RMDevelopers" }
+  }
+}

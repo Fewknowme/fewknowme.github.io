@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "rmdevelopers": "node scripts/render-rmdevelopers.mjs",
+    "prebuild": "npm run rmdevelopers",
     "build": "vite build && tsc --noEmit",
     "start": "vite start",
     "deploy": "vite build && gh-pages -d dist"

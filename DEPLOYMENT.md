@@ -12,6 +12,9 @@ The workflow uploads `.output/public`. Keep public files in `public/`:
 - `/lanezing/` is the static LaneZing game landing page (`index.html` and `assets/`).
 - `/patang-pop/` is the static Patang Pop landing page (`index.html` and `assets/`),
   next to the older `privacy.html`.
+- `/rmdevelopers/` is the RMDevelopers studio landing page. Edit content only in
+  `public/rmdevelopers/site.json`; `npm run rmdevelopers` (also run by `prebuild`)
+  regenerates `index.html` from it. Styles are in `styles.css`, motion in `main.js`.
 - `/robots.txt` and `/sitemap.xml` list the public pages for search engines. Add new
   landing pages to the sitemap.
 

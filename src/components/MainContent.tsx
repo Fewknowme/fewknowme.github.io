@@ -38,6 +38,17 @@ const socialMeta: Record<
   MediumIcon: { label: "Writing", icon: <NewspaperRoundedIcon /> },
 };
 
+// Absolute URL on purpose: the static /rmdevelopers/ page lives in public/,
+// and a relative link would be crawled by the TanStack prerenderer.
+const studioUrl = "https://fewknowme.github.io/rmdevelopers/";
+
+const studioApps = [
+  { name: "ArthZen", kind: "Finance", icon: "/rmdevelopers/assets/arthzen-icon.webp" },
+  { name: "Local Notes", kind: "Productivity", icon: "/rmdevelopers/assets/localnotes-icon.webp" },
+  { name: "LaneZing", kind: "Racing game", icon: "/rmdevelopers/assets/lanezing-icon.webp" },
+  { name: "Patang Pop", kind: "Puzzle game", icon: "/rmdevelopers/assets/patangpop-icon.webp" },
+];
+
 function plainText(blocks: Project["description"]) {
   if (!Array.isArray(blocks)) return "";
   return blocks
@@ -316,6 +327,43 @@ export default function MainContent() {
             </Reveal>
           ))}
         </div>
+      </section>
+
+      <section id="studio" className="studio section-shell">
+        <Reveal className="section-heading">
+          <SectionLabel index="04">RMDevelopers</SectionLabel>
+          <h2>I also ship<br /><em>Android apps.</em></h2>
+          <p>
+            RMDevelopers is my independent studio for small, private,
+            offline-first apps and games, all free on Google Play.
+          </p>
+        </Reveal>
+
+        <div className="studio__apps">
+          {studioApps.map((app, index) => (
+            <Reveal className="studio__app" delay={index * 80} key={app.name}>
+              <img src={app.icon} alt="" width={64} height={64} loading="lazy" />
+              <div>
+                <strong>{app.name}</strong>
+                <span>{app.kind}</span>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal className="studio__cta" delay={120}>
+          <a className="button-primary" href={studioUrl}>
+            Visit the studio <ArrowOutwardRoundedIcon />
+          </a>
+          <a
+            className="button-quiet"
+            href="https://play.google.com/store/apps/developer?id=RMDevelopers"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Google Play <ArrowOutwardRoundedIcon />
+          </a>
+        </Reveal>
       </section>
 
       <section className="contact-section section-shell">

@@ -904,6 +904,66 @@ a:focus-visible {
   border-top: 1px solid var(--line);
 }
 
+.studio {
+  padding-block: 100px;
+  border-top: 1px solid var(--line);
+}
+
+.studio__apps {
+  display: grid;
+  gap: 12px;
+}
+
+.studio__app {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.studio__app img {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+}
+
+.studio__app strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.studio__app span {
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.studio__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+@media (min-width: 700px) {
+  .studio__apps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .studio__apps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .voices__grid {
   display: grid;
   gap: 16px;

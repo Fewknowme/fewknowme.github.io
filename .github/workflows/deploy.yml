@@ -45,6 +45,8 @@ jobs:
           cmp public/patang-pop/index.html .output/public/patang-pop/index.html
           cmp public/robots.txt .output/public/robots.txt
           cmp public/sitemap.xml .output/public/sitemap.xml
+          cmp public/rmdevelopers/index.html .output/public/rmdevelopers/index.html
+          cmp public/rmdevelopers/site.json .output/public/rmdevelopers/site.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

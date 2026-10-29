@@ -8,6 +8,7 @@ const navigation = [
   { label: "About", href: "#about" },
   { label: "Work", href: "#work" },
   { label: "Voices", href: "#testimonials" },
+  { label: "Apps", href: "#studio" },
 ];
 
 export default function Header() {
